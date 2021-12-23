@@ -36,18 +36,21 @@ const Transaction = mongoose.model(
         transaction_details: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'TransactationDetail'
+                ref: 'TransactionDetail'
             }
         ],
         created_at: Date,
     })
 )
 
-const TransactationDetail = mongoose.model(
-    'TransactationDetail',
+const TransactionDetail = mongoose.model(
+    'TransactionDetail',
     mongoose.Schema({
-        transaction_id: Number,
-        location_id: Number,
+        transaction_id: String,
+        location: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Location'  
+        },
         start: Date,
         end: Date,
         subtotal: Number,
@@ -55,4 +58,4 @@ const TransactationDetail = mongoose.model(
     })
 )
 
-export {Customer, Location, Transaction, TransactationDetail}
+export {Customer, Location, Transaction, TransactionDetail}
