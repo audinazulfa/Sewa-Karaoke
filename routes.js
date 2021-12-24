@@ -1,5 +1,5 @@
 import express from "express"
-import { CustomerController, LocationController, TransactionController } from "./controllers.js"
+import { CustomerController, LocationController, ReportController, TransactionController} from "./controllers.js"
 
 const routes  = express.Router()
 
@@ -20,5 +20,10 @@ routes.get('/transactions/:id', TransactionController.readById)
 routes.post('/transactions/', TransactionController.save)
 routes.delete('/transactions/:id', TransactionController.delete)
 routes.patch('/transactions/:id', TransactionController.update)
+
+routes.get('/report/daily/', ReportController.daily)
+routes.get('/report/weekly/', ReportController.weekly)
+routes.get('/report/monthly/', ReportController.monthly)
+routes.get('/report/yearly/', ReportController.yearly)
 
 export default routes

@@ -1,4 +1,4 @@
-import { Customer, Location, Transaction, TransactionDetail } from "./models.js"
+import { Customer, Location, Transaction, TransactionDetail} from "./models.js"
 
 export const CustomerController = {
     readAll: async (req, res) => {
@@ -162,5 +162,70 @@ export const TransactionController = {
         } catch (error) {
             res.status(500).json({message: error})
         }
+    },
+}
+
+export const ReportController = {
+    daily: async (req, res) => {
+        const result = await Transaction.aggregate([
+            {
+                $group: {
+                    _id: {
+                        year: {$year: "$transaction_date"},
+                        month: {$month: "$transaction_date"},
+                        dayOfMonth: {$dayOfMonth: "$transaction_date"},
+                    },
+                    value: {$sum: "$total"},
+                    count: {$sum: 1},
+                },
+            },
+        ])
+
+        res.status(200).json(result)
+    },
+    weekly: async (req, res) => {
+        const result = await Transaction.aggregate([
+            {
+                $group: {
+                    _id: {
+                        week: {$week: "$transaction_date"}
+                    },
+                    value: {$sum: "$total"},
+                    count: {$sum: 1},
+                },
+            },
+        ])
+
+        res.status(200).json(result)
+    },
+    monthly: async (req, res) => {
+        const result = await Transaction.aggregate([
+            {
+                $group: {
+                    _id: {
+                        month: {$month: "$transaction_date"}
+                    },
+                    value: {$sum: "$total"},
+                    count: {$sum: 1},
+                },
+            },
+        ])
+
+        res.status(200).json(result)
+    },
+    yearly: async (req, res) => {
+        const result = await Transaction.aggregate([
+            {
+                $group: {
+                    _id: {
+                        year: {$year: "$transaction_date"}
+                    },
+                    value: {$sum: "$total"},
+                    count: {$sum: 1},
+                },
+            },
+        ])
+
+        res.status(200).json(result)
     },
 }
